@@ -184,14 +184,18 @@
       return NO;
     }
     if ([BILib inIgnoreListWithClassName:NSStringFromClass(class) methodName:methodName]) {
+#ifdef DEBUG
       NSLog(@"BILib: [%@ %@] is not supported.", NSStringFromClass(class), methodName);
+#endif
       return NO;
     }
 
     BOOL isClassMethod = NO;
     Method originalMethod = [BILibUtils getMethodInClass:class selector:sel isClassMethod:&isClassMethod];
     if (!originalMethod) {
+#ifdef DEBUG
       NSLog(@"BILib: [%@ %@] is not found.", NSStringFromClass(class), methodName);
+#endif
       return NO;
     }
 
@@ -219,7 +223,9 @@
     }
     [BILib savePreprocess:preprocess andPostprocess:postprocess withItem:item forMethodName:methodName];
   } @catch (NSException* exception) {
+#ifdef DEBUG
     NSLog(@"BILib handled a exception: %@", exception);
+#endif
     return NO;
   }
 
