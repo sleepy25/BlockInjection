@@ -50,14 +50,19 @@
   int index = 2;
   while (numberOfArguments--) {
     NSUInteger size, alignment;
-    NSGetSizeAndAlignment([signature getArgumentTypeAtIndex:index], &size, &alignment);
-    if (4 >= size) {
-      void* pval = va_arg(*pargp, void*);
+    const char *type = [signature getArgumentTypeAtIndex:index];
+    NSString* typeString = [NSString stringWithUTF8String:type];
+    if ([typeString isEqualToString:@"@"] ||
+        [typeString isEqualToString:@"#"] ||
+        [typeString isEqualToString:@"*"] ||
+        [typeString rangeOfString:@"^"].location != NSNotFound ||
+        [typeString isEqualToString:@":"] ){
+      // object type pointer
+      void * pval = va_arg(*pargp, void*);
       [invocation setArgument:&pval atIndex:index++];
-    } else if (8 >= size) {
-      double dval = va_arg(*pargp, double);
-      [invocation setArgument:&dval atIndex:index++];
     } else {
+      // others, primitive types or structure, array
+      NSGetSizeAndAlignment(type, &size, &alignment);
       [BILibArg sendOneArgumentToInvocation:invocation
                                   arguments:pargp
                                       index:index++
