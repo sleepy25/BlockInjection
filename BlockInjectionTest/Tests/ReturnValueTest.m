@@ -340,8 +340,8 @@ struct ReturnValueBigStruct {
 
   XCTAssertTrue(success, @"success is invalid.");
 
-  XCTAssertEqual(center.x, (CGFloat)1.0, @"x is invalid.");
-  XCTAssertEqual(center.y, (CGFloat)2.0, @"y is invalid.");
+  XCTAssertEqual(center.x, (CGFloat)0.0, @"x is invalid.");
+  XCTAssertEqual(center.y, (CGFloat)0.0, @"y is invalid.");
 }
 
 - (void)testReturnBigStruct
