@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 tokorom. All rights reserved.
 //
 
-#import "SkippingTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 
 #import <objc/runtime.h>
@@ -39,6 +39,9 @@
 
 #pragma mark - SkippingTest
 
+@interface SkippingTest : XCTestCase
+@end
+
 @implementation SkippingTest
 
 - (void)setUp
@@ -59,7 +62,7 @@
 
   int ret = [[SubjectForSkipping new] intValue];
 
-  STAssertEquals(ret, 100, @"ret is invalid.");
+  XCTAssertEqual(ret, 100, @"ret is invalid.");
 }
 
 - (void)testSkippingOriginalMethod
@@ -71,7 +74,7 @@
 
   int ret = [[SubjectForSkipping new] intValue];
 
-  STAssertEquals(ret, 10, @"ret is invalid.");
+  XCTAssertEqual(ret, 10, @"ret is invalid.");
 }
 
 - (void)testSkippingPostprocess
@@ -88,8 +91,8 @@
 
   int ret = [[SubjectForSkipping new] intValue];
 
-  STAssertEquals(ret, 10, @"ret is invalid.");
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(ret, 10, @"ret is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 }
 
 - (void)testOverrideReturnValueByPostprocess
@@ -101,7 +104,7 @@
 
   int ret = [[SubjectForSkipping new] intValue];
 
-  STAssertEquals(ret, 99, @"ret is invalid.");
+  XCTAssertEqual(ret, 99, @"ret is invalid.");
 }
 
 - (void)testReturnChar
@@ -113,7 +116,7 @@
 
   char c = [[SubjectForSkipping new] charValue];
 
-  STAssertEquals(c, (char)'c', @"c is invalid.");
+  XCTAssertEqual(c, (char)'c', @"c is invalid.");
 }
 
 @end

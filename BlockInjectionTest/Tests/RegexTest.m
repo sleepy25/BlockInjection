@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 tokorom. All rights reserved.
 //
 
-#import "RegexTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 
 #pragma mark - SubjectForRegex
@@ -44,6 +44,9 @@
 
 #pragma mark - RegexTest
 
+@interface RegexTest : XCTestCase
+@end
+
 @implementation RegexTest
 
 - (void)setUp
@@ -64,15 +67,15 @@
     ++i;
   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+  XCTAssertEqual(i, 1, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+  XCTAssertEqual(i, 2, @"i is invalid.");
 }
 
 - (void)testAnyMethodsWithPostprocess
@@ -82,15 +85,15 @@
     ++i;
   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+  XCTAssertEqual(i, 1, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+  XCTAssertEqual(i, 2, @"i is invalid.");
 }
 
 - (void)testAnyClassesAndAnyMethodsWithPreprocess
@@ -100,19 +103,19 @@
     ++i;
   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 
   [[SubjectForRegex2 new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+  XCTAssertEqual(i, 1, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+  XCTAssertEqual(i, 2, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertEquals(i, 3, @"i is invalid.");
+  XCTAssertEqual(i, 3, @"i is invalid.");
 }
 
 - (void)testAnyClassesAndAnyMethodsWithPostprocess
@@ -122,19 +125,19 @@
     ++i;
   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 
   [[SubjectForRegex2 new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+  XCTAssertEqual(i, 1, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+  XCTAssertEqual(i, 2, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertEquals(i, 3, @"i is invalid.");
+  XCTAssertEqual(i, 3, @"i is invalid.");
 }
 
 - (void)testHandlePrettyFunction
@@ -146,15 +149,15 @@
 
   [[SubjectForRegex2 new] instanceMethod:@"hello!"];
 
-  STAssertTrue([handlePrettyFunction isEqualToString:@"-[SubjectForRegex2 instanceMethod:]"], @"handlePrettyFunction is invalid: %@", handlePrettyFunction);
+  XCTAssertTrue([handlePrettyFunction isEqualToString:@"-[SubjectForRegex2 instanceMethod:]"], @"handlePrettyFunction is invalid: %@", handlePrettyFunction);
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertTrue([handlePrettyFunction isEqualToString:@"-[SubjectForRegex instanceMethod:]"], @"handlePrettyFunction is invalid: %@", handlePrettyFunction);
+  XCTAssertTrue([handlePrettyFunction isEqualToString:@"-[SubjectForRegex instanceMethod:]"], @"handlePrettyFunction is invalid: %@", handlePrettyFunction);
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertTrue([handlePrettyFunction isEqualToString:@"-[SubjectForRegex instanceMethod2]"], @"handlePrettyFunction is invalid: %@", handlePrettyFunction);
+  XCTAssertTrue([handlePrettyFunction isEqualToString:@"-[SubjectForRegex instanceMethod2]"], @"handlePrettyFunction is invalid: %@", handlePrettyFunction);
 }
 
 - (void)testRegexWithPreprocess
@@ -168,15 +171,15 @@
     ++i;
   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+  XCTAssertEqual(i, 1, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+  XCTAssertEqual(i, 2, @"i is invalid.");
 }
 
 - (void)testRegexWithPostprocess
@@ -190,19 +193,19 @@
     ++i;
   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+  XCTAssertEqual(i, 1, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+  XCTAssertEqual(i, 2, @"i is invalid.");
 
   [[SubjectForRegex2 new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 3, @"i is invalid.");
+  XCTAssertEqual(i, 3, @"i is invalid.");
 }
 
 - (void)testRegexWithUIView
@@ -218,7 +221,7 @@
   UIView* view = [UIView new];
   view.frame = CGRectMake(0.0, 0.0, 10.0, 5.0);
 
-  STAssertEquals(1, 1, nil);
+  XCTAssertEqual(1, 1, @"");
 }
 
 - (void)testRegexWithMacro
@@ -228,15 +231,15 @@
     ++i;
   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+  XCTAssertEqual(i, 0, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+  XCTAssertEqual(i, 1, @"i is invalid.");
 
   [[SubjectForRegex new] instanceMethod2];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+  XCTAssertEqual(i, 2, @"i is invalid.");
 }
 
 - (void)testPreprocessInAllMethods
@@ -253,7 +256,7 @@
   
   view.frame = CGRectMake(0.0, 0.0, 10.0, 5.0);
 
-  STAssertEquals(1, 1, nil);
+  XCTAssertEqual(1, 1, @"");
 }
 
 - (void)testPreprocessAndPostprocessInAllMethods
@@ -273,7 +276,7 @@
   
   view.frame = CGRectMake(0.0, 0.0, 10.0, 5.0);
 
-  STAssertEquals(1, 1, nil);
+  XCTAssertEqual(1, 1);
 }
 
 @end

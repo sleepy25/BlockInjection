@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 tokorom. All rights reserved.
 //
 
-#import "EtcTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 #import "BIItemManager.h"
 #import "BIItem.h"
@@ -32,6 +32,9 @@ typedef struct SuperBigStruct {
 }
 @end
 
+@interface EtcTest : XCTestCase
+@end
+
 @implementation EtcTest
 
 - (void)setUp
@@ -50,7 +53,7 @@ typedef struct SuperBigStruct {
   BIItemManager *manager1 = [BIItemManager sharedInstance];
   BIItemManager *manager2 = [manager1 copy];
 
-  STAssertEqualObjects(manager1, manager2, @"manager1 and manager2 is different");
+  XCTAssertEqualObjects(manager1, manager2, @"manager1 and manager2 is different");
 }
 
 - (void)testReturnSuperBigStruct
@@ -63,7 +66,7 @@ typedef struct SuperBigStruct {
 
   SuperBig ret = [[ClassForEtc new] superBig];
 
-  STAssertEquals(ret.b, (bool)false, @"ret is invalid.");
+  XCTAssertEqual(ret.b, (bool)false, @"ret is invalid.");
 }
 
 - (void)testDeallocBIItem
@@ -73,7 +76,7 @@ typedef struct SuperBigStruct {
   [item prepareWithInvocation:[self.class invocation]];
   [item skipAfterProcessesWithReturnValue:&i];
 
-  STAssertNotNil(item, @"item is nil");
+  XCTAssertNotNil(item, @"item is nil");
 }
 
 - (void)testBIItemOthers
@@ -86,7 +89,7 @@ typedef struct SuperBigStruct {
   [item skipAfterProcessesWithReturnValue:&i2];
   [item prepareWithInvocation:nil];
 
-  STAssertNotNil(item, @"item is nil");
+  XCTAssertNotNil(item, @"item is nil");
 }
 
 #pragma mark - Private Methods

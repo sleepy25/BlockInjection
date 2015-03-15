@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 tokorom. All rights reserved.
 //
 
-#import "ReturnValueTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 #import "BILibDummyStruct.h"
 
@@ -82,6 +82,9 @@ struct ReturnValueBigStruct {
 - (BILibStruct900)struct900 { BILibStruct900 st; return st; }
 @end
 
+@interface ReturnValueTest : XCTestCase
+@end
+
 @implementation ReturnValueTest
 
 - (void)setUp
@@ -109,8 +112,8 @@ struct ReturnValueBigStruct {
 
   BOOL isHidden = view.isHidden;
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertTrue(isHidden, @"isHidden is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertTrue(isHidden, @"isHidden is invalid.");
 }
 
 - (void)testReturnInt
@@ -125,10 +128,10 @@ struct ReturnValueBigStruct {
   UIView* view = [UIView new];
   view.tag = 5;
 
-  int tag = view.tag;
+  NSInteger tag = view.tag;
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(tag, (int)5, @"tag is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(tag, (int)5, @"tag is invalid.");
 }
 
 - (void)testReturnId
@@ -145,16 +148,16 @@ struct ReturnValueBigStruct {
 
   UIColor* color = view.backgroundColor;
 
-  STAssertTrue(success, @"success is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
 
   CGFloat r1, r2, g1, g2, b1, b2, a1, a2;
   [color getRed:&r1 green:&g1 blue:&b1 alpha:&a1];
   [[UIColor redColor] getRed:&r2 green:&g2 blue:&b2 alpha:&a2];
 
-  STAssertEquals(r1, r2, @"r is invalid.");
-  STAssertEquals(g1, g2, @"g is invalid.");
-  STAssertEquals(b1, b2, @"b is invalid.");
-  STAssertEquals(a1, a2, @"a is invalid.");
+  XCTAssertEqual(r1, r2, @"r is invalid.");
+  XCTAssertEqual(g1, g2, @"g is invalid.");
+  XCTAssertEqual(b1, b2, @"b is invalid.");
+  XCTAssertEqual(a1, a2, @"a is invalid.");
 }
 
 - (void)testReturnCGFloat
@@ -171,8 +174,8 @@ struct ReturnValueBigStruct {
 
   CGFloat alpha = view.alpha;
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(alpha, (CGFloat)0.8, @"alpha is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(alpha, (CGFloat)0.8, @"alpha is invalid.");
 }
 
 - (void)testReturnConstInt
@@ -186,8 +189,8 @@ struct ReturnValueBigStruct {
 
   const int ret = [[ClassForReturnValue new] ci];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(ret, (const int)100, @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(ret, (const int)100, @"ret is invalid.");
 }
 
 - (void)testReturnConstChars
@@ -201,9 +204,9 @@ struct ReturnValueBigStruct {
 
   const char* ret = [[ClassForReturnValue new] constChars];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(ret[0], (char)'c', @"ret is invalid.");
-  STAssertEquals(ret[1], (char)'i', @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(ret[0], (char)'c', @"ret is invalid.");
+  XCTAssertEqual(ret[1], (char)'i', @"ret is invalid.");
 }
 
 - (void)testReturnDouble
@@ -217,8 +220,8 @@ struct ReturnValueBigStruct {
 
   double ret = [[ClassForReturnValue new] doubleValue];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(ret, (double)99.99, @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(ret, (double)99.99, @"ret is invalid.");
 }
 
 - (void)testReturnCppBool
@@ -232,8 +235,8 @@ struct ReturnValueBigStruct {
 
   bool ret = [[ClassForReturnValue new] boolValue];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(ret, (bool)true, @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(ret, (bool)true, @"ret is invalid.");
 }
 
 - (void)testReturnChar
@@ -247,8 +250,8 @@ struct ReturnValueBigStruct {
 
   char ret = [[ClassForReturnValue new] charValue];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(ret, (char)'c', @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(ret, (char)'c', @"ret is invalid.");
 }
 
 - (void)testReturnArray
@@ -262,9 +265,9 @@ struct ReturnValueBigStruct {
 
   int* ret = [[ClassForReturnValue new] arrayValue];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(ret[0], (int)1, @"ret is invalid.");
-  STAssertEquals(ret[1], (int)2, @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(ret[0], (int)1, @"ret is invalid.");
+  XCTAssertEqual(ret[1], (int)2, @"ret is invalid.");
 }
 
 - (void)testReturnClass
@@ -278,8 +281,8 @@ struct ReturnValueBigStruct {
 
   Class ret = [[ClassForReturnValue new] classValue];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertTrue([@"UIView" isEqualToString:NSStringFromClass(ret)], @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertTrue([@"UIView" isEqualToString:NSStringFromClass(ret)], @"ret is invalid.");
 }
 
 - (void)testReturnSelector
@@ -293,8 +296,8 @@ struct ReturnValueBigStruct {
 
   SEL ret = [[ClassForReturnValue new] selValue];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertTrue([@"tag" isEqualToString:NSStringFromSelector(ret)], @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertTrue([@"tag" isEqualToString:NSStringFromSelector(ret)], @"ret is invalid.");
 }
 
 - (void)testReturnCGRect
@@ -312,12 +315,12 @@ struct ReturnValueBigStruct {
 
   CGRect frame = view.frame;
 
-  STAssertTrue(success, @"success is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
 
-  STAssertEquals(frame.origin.x, (CGFloat)1.0, @"x is invalid.");
-  STAssertEquals(frame.origin.y, (CGFloat)2.0, @"y is invalid.");
-  STAssertEquals(frame.size.width, (CGFloat)3.0, @"w is invalid.");
-  STAssertEquals(frame.size.height, (CGFloat)4.0, @"h is invalid.");
+  XCTAssertEqual(frame.origin.x, (CGFloat)1.0, @"x is invalid.");
+  XCTAssertEqual(frame.origin.y, (CGFloat)2.0, @"y is invalid.");
+  XCTAssertEqual(frame.size.width, (CGFloat)3.0, @"w is invalid.");
+  XCTAssertEqual(frame.size.height, (CGFloat)4.0, @"h is invalid.");
 }
 
 - (void)testReturnCGPoint
@@ -335,10 +338,10 @@ struct ReturnValueBigStruct {
 
   CGPoint center = view.center;
 
-  STAssertTrue(success, @"success is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
 
-  STAssertEquals(center.x, (CGFloat)1.0, @"x is invalid.");
-  STAssertEquals(center.y, (CGFloat)2.0, @"y is invalid.");
+  XCTAssertEqual(center.x, (CGFloat)1.0, @"x is invalid.");
+  XCTAssertEqual(center.y, (CGFloat)2.0, @"y is invalid.");
 }
 
 - (void)testReturnBigStruct
@@ -354,8 +357,8 @@ struct ReturnValueBigStruct {
 
   struct ReturnValueBigStruct ret = [[ClassForReturnValue new] bigStructValue];
 
-  STAssertTrue(success, @"success is invalid.");
-  STAssertEquals(ret.f, (CGFloat)0.255, @"ret is invalid.");
+  XCTAssertTrue(success, @"success is invalid.");
+  XCTAssertEqual(ret.f, (CGFloat)0.255, @"ret is invalid.");
 }
 
 - (void)testReturnSomeStruct
@@ -389,7 +392,7 @@ struct ReturnValueBigStruct {
     ++count; BILibStruct9 st; return st;
   }];
 
-  STAssertEquals(count, (int)0, @"count is invalid.");
+  XCTAssertEqual(count, (int)0, @"count is invalid.");
 
   ClassForReturnValue* c = [ClassForReturnValue new];
   [c struct1];
@@ -402,7 +405,7 @@ struct ReturnValueBigStruct {
   [c struct8];
   [c struct9];
 
-  STAssertEquals(count, (int)9, @"count is invalid.");
+  XCTAssertEqual(count, (int)9, @"count is invalid.");
 }
 
 - (void)testReturnSomeStruct10
@@ -436,7 +439,7 @@ struct ReturnValueBigStruct {
     ++count; BILibStruct90 st; return st;
   }];
 
-  STAssertEquals(count, (int)0, @"count is invalid.");
+  XCTAssertEqual(count, (int)0, @"count is invalid.");
 
   ClassForReturnValue* c = [ClassForReturnValue new];
   [c struct10];
@@ -449,7 +452,7 @@ struct ReturnValueBigStruct {
   [c struct80];
   [c struct90];
 
-  STAssertEquals(count, (int)9, @"count is invalid.");
+  XCTAssertEqual(count, (int)9, @"count is invalid.");
 }
 
 - (void)testReturnSomeStruct100
@@ -483,7 +486,7 @@ struct ReturnValueBigStruct {
     ++count; BILibStruct900 st; return st;
   }];
 
-  STAssertEquals(count, (int)0, @"count is invalid.");
+  XCTAssertEqual(count, (int)0, @"count is invalid.");
 
   ClassForReturnValue* c = [ClassForReturnValue new];
   [c struct100];
@@ -496,7 +499,7 @@ struct ReturnValueBigStruct {
   [c struct800];
   [c struct900];
 
-  STAssertEquals(count, (int)9, @"count is invalid.");
+  XCTAssertEqual(count, (int)9, @"count is invalid.");
 }
 
 @end
