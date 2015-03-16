@@ -47,28 +47,49 @@
                 numberOfArguments:(NSUInteger)numberOfArguments
                         signature:(NSMethodSignature*)signature
 {
+  NSArray* objectTypeEncoding = @[
+                                  @"@",
+                                  @"#",
+                                  @"*",
+                                  @"^",
+                                  @":"
+                                  ];
+  NSArray* smallPrimitiveTypeEncoding = @[
+                                    @"c",
+                                    @"i",
+                                    @"s",
+                                    @"l",
+                                    @"C",
+                                    @"I",
+                                    @"S",
+                                    @"L",
+                                    @"f",
+                                    @"B",
+                                    ];
+    
   int index = 2;
   while (numberOfArguments--) {
     NSUInteger size, alignment;
     const char *type = [signature getArgumentTypeAtIndex:index];
     NSGetSizeAndAlignment(type, &size, &alignment);
     NSString* typeString = [NSString stringWithUTF8String:type];
-    if ([typeString isEqualToString:@"@"] ||
-        [typeString isEqualToString:@"#"] ||
-        [typeString isEqualToString:@"*"] ||
-        [typeString rangeOfString:@"^"].location != NSNotFound ||
-        [typeString isEqualToString:@":"] ){
+    if ([objectTypeEncoding containsObject:typeString]){
       // object type pointer
       void * pval = va_arg(*pargp, void*);
       [invocation setArgument:&pval atIndex:index++];
-    } else if (4 >= size) {
-        int32_t val = va_arg(*pargp, int32_t);
-        [invocation setArgument:&val atIndex:index++];
-    } else if (8 >= size) {
-        double val = va_arg(*pargp, double);
-        [invocation setArgument:&val atIndex:index++];
+    } else if ([smallPrimitiveTypeEncoding containsObject:typeString]) {
+      int32_t val = va_arg(*pargp, int32_t);
+      [invocation setArgument:&val atIndex:index++];
+    } else if ([typeString isEqualToString:@"q"] || [typeString isEqualToString:@"Q"]) {
+      long long val = va_arg(*pargp, long long);
+      [invocation setArgument:&val atIndex:index++];
+    } else if ([typeString isEqualToString:@"d"]) {
+      double val = va_arg(*pargp, double);
+      [invocation setArgument:&val atIndex:index++];
     } else {
       // others, primitive types or structure, array
+      if (4 >= size) size = 4;
+      if (size % alignment != 0) size = (size / alignment) * (alignment + 1);
       [BILibArg sendOneArgumentToInvocation:invocation
                                   arguments:pargp
                                       index:index++
