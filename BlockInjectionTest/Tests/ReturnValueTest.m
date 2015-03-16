@@ -170,12 +170,12 @@ struct ReturnValueBigStruct {
   }];
 
   UIView* view = [UIView new];
-  view.alpha = 0.8;
+  view.alpha = (CGFloat)0.8;
 
   CGFloat alpha = view.alpha;
 
   XCTAssertTrue(success, @"success is invalid.");
-  XCTAssertEqual(alpha, (CGFloat)0.8, @"alpha is invalid.");
+  XCTAssertEqualWithAccuracy(alpha, (CGFloat)0.8, FLT_EPSILON, @"alpha is invalid.");
 }
 
 - (void)testReturnConstInt
