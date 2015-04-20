@@ -34,41 +34,39 @@ typedef struct SuperBigStruct {
 
 @implementation EtcTest
 
-- (void)setUp
-{
+- (void)setUp {
   [super setUp];
   [BILib clear];
 }
 
-- (void)tearDown
-{
+- (void)tearDown {
   [super tearDown];
 }
 
-- (void)testCopyBIItemManager
-{
+- (void)testCopyBIItemManager {
   BIItemManager *manager1 = [BIItemManager sharedInstance];
   BIItemManager *manager2 = [manager1 copy];
 
-  STAssertEqualObjects(manager1, manager2, @"manager1 and manager2 is different");
+  STAssertEqualObjects(manager1, manager2,
+                       @"manager1 and manager2 is different");
 }
 
-- (void)testReturnSuperBigStruct
-{
-  [BILib injectToClassWithName:@"ClassForEtc" methodName:@"superBig" preprocess:^SuperBig(id target){
-    SuperBig st;
-    st.b = true;
-    return st;
-  }];
+- (void)testReturnSuperBigStruct {
+  [BILib injectToClassWithName:@"ClassForEtc"
+                    methodName:@"superBig"
+                    preprocess:^SuperBig(id target) {
+                      SuperBig st;
+                      st.b = true;
+                      return st;
+                    }];
 
   SuperBig ret = [[ClassForEtc new] superBig];
 
   STAssertEquals(ret.b, (bool)false, @"ret is invalid.");
 }
 
-- (void)testDeallocBIItem
-{
-  BIItem* item = [BIItem new];
+- (void)testDeallocBIItem {
+  BIItem *item = [BIItem new];
   int i = 100;
   [item prepareWithInvocation:[self.class invocation]];
   [item skipAfterProcessesWithReturnValue:&i];
@@ -76,9 +74,8 @@ typedef struct SuperBigStruct {
   STAssertNotNil(item, @"item is nil");
 }
 
-- (void)testBIItemOthers
-{
-  BIItem* item = [BIItem new];
+- (void)testBIItemOthers {
+  BIItem *item = [BIItem new];
   int i = 100;
   [item prepareWithInvocation:[self.class invocation]];
   [item skipAfterProcessesWithReturnValue:&i];
@@ -91,12 +88,15 @@ typedef struct SuperBigStruct {
 
 #pragma mark - Private Methods
 
-+ (NSInvocation*)invocation
-{
++ (NSInvocation *)invocation {
   BOOL isClassMethod = NO;
-  Method method = [BILibUtils getMethodInClass:[ClassForEtc class] selector:@selector(intValue) isClassMethod:&isClassMethod];
-  NSMethodSignature* signature = [NSMethodSignature signatureWithObjCTypes:method_getTypeEncoding(method)];
-  NSInvocation* invocation = [NSInvocation invocationWithMethodSignature:signature];
+  Method method = [BILibUtils getMethodInClass:[ClassForEtc class]
+                                      selector:@selector(intValue)
+                                 isClassMethod:&isClassMethod];
+  NSMethodSignature *signature =
+      [NSMethodSignature signatureWithObjCTypes:method_getTypeEncoding(method)];
+  NSInvocation *invocation =
+      [NSInvocation invocationWithMethodSignature:signature];
   return invocation;
 }
 

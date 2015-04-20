@@ -16,22 +16,19 @@
 #pragma mark - SubjectForSkipping
 
 @interface SubjectForSkipping : NSObject
-@end 
+@end
 
 @implementation SubjectForSkipping
 
-- (int)intValue
-{
+- (int)intValue {
   return 100;
 }
 
-- (CGRect)rectValue
-{
+- (CGRect)rectValue {
   return CGRectMake(10.0, 20.0, 30.0, 40.0);
 }
 
-- (char)charValue
-{
+- (char)charValue {
   return 'a';
 }
 
@@ -41,50 +38,53 @@
 
 @implementation SkippingTest
 
-- (void)setUp
-{
+- (void)setUp {
   [super setUp];
   [BILib clear];
 }
 
-- (void)tearDown
-{
+- (void)tearDown {
   [super tearDown];
 }
 
-- (void)testNormallyReturnValue
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" preprocess:^{
-  }];
+- (void)testNormallyReturnValue {
+  [BILib injectToClassWithName:@"SubjectForSkipping"
+                    methodName:@"intValue"
+                    preprocess:^{
+                    }];
 
   int ret = [[SubjectForSkipping new] intValue];
 
   STAssertEquals(ret, 100, @"ret is invalid.");
 }
 
-- (void)testSkippingOriginalMethod
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" preprocess:^{
-    int ret = 10;
-    [BILib skipAfterProcessesWithReturnValue:&ret];
-  }];
+- (void)testSkippingOriginalMethod {
+  [BILib injectToClassWithName:@"SubjectForSkipping"
+                    methodName:@"intValue"
+                    preprocess:^{
+                      int ret = 10;
+                      [BILib skipAfterProcessesWithReturnValue:&ret];
+                    }];
 
   int ret = [[SubjectForSkipping new] intValue];
 
   STAssertEquals(ret, 10, @"ret is invalid.");
 }
 
-- (void)testSkippingPostprocess
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" preprocess:^{
-    int ret = 10;
-    [BILib skipAfterProcessesWithReturnValue:&ret];
-  }];
+- (void)testSkippingPostprocess {
+  [BILib injectToClassWithName:@"SubjectForSkipping"
+                    methodName:@"intValue"
+                    preprocess:^{
+                      int ret = 10;
+                      [BILib skipAfterProcessesWithReturnValue:&ret];
+                    }];
 
   __block int i = 0;
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" postprocess:^{
-    i = 1;
-  }];
+  [BILib injectToClassWithName:@"SubjectForSkipping"
+                    methodName:@"intValue"
+                   postprocess:^{
+                     i = 1;
+                   }];
 
   int ret = [[SubjectForSkipping new] intValue];
 
@@ -92,24 +92,26 @@
   STAssertEquals(i, 0, @"i is invalid.");
 }
 
-- (void)testOverrideReturnValueByPostprocess
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" postprocess:^{
-    int ret = 99;
-    [BILib skipAfterProcessesWithReturnValue:&ret];
-  }];
+- (void)testOverrideReturnValueByPostprocess {
+  [BILib injectToClassWithName:@"SubjectForSkipping"
+                    methodName:@"intValue"
+                   postprocess:^{
+                     int ret = 99;
+                     [BILib skipAfterProcessesWithReturnValue:&ret];
+                   }];
 
   int ret = [[SubjectForSkipping new] intValue];
 
   STAssertEquals(ret, 99, @"ret is invalid.");
 }
 
-- (void)testReturnChar
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"charValue" preprocess:^{
-    char c = 'c';
-    [BILib skipAfterProcessesWithReturnValue:&c];
-  }];
+- (void)testReturnChar {
+  [BILib injectToClassWithName:@"SubjectForSkipping"
+                    methodName:@"charValue"
+                    preprocess:^{
+                      char c = 'c';
+                      [BILib skipAfterProcessesWithReturnValue:&c];
+                    }];
 
   char c = [[SubjectForSkipping new] charValue];
 

@@ -12,12 +12,11 @@
 #pragma mark - Parent
 
 @interface Parent : NSObject
-@end 
+@end
 
 @implementation Parent
 
-- (void)instanceMethod:(id)arg
-{
+- (void)instanceMethod:(id)arg {
   NSLog(@"Parent instanceMethod: %@", arg);
 }
 
@@ -26,12 +25,11 @@
 #pragma mark - Child
 
 @interface Child : Parent
-@end 
+@end
 
 @implementation Child
 
-- (void)instanceMethod:(id)arg
-{
+- (void)instanceMethod:(id)arg {
   NSLog(@"Child instanceMethod: %@", arg);
   [super instanceMethod:arg];
 }
@@ -42,26 +40,27 @@
 
 @implementation InheritanceTest
 
-- (void)setUp
-{
+- (void)setUp {
   [super setUp];
   [BILib clear];
 }
 
-- (void)tearDown
-{
+- (void)tearDown {
   [super tearDown];
 }
 
-- (void)testSuperClassMethod
-{
+- (void)testSuperClassMethod {
   __block int i = 0;
-  [BILib injectToClassWithNames:@[@"Child"] methodNames:@[@"instanceMethod:"] preprocess:^{
-    ++i;
-  }];
-  [BILib injectToClassWithNames:@[@"Parent"] methodNames:@[@"instanceMethod:"] preprocess:^{
-    i+=2;
-  }];
+  [BILib injectToClassWithNames:@[ @"Child" ]
+                    methodNames:@[ @"instanceMethod:" ]
+                     preprocess:^{
+                       ++i;
+                     }];
+  [BILib injectToClassWithNames:@[ @"Parent" ]
+                    methodNames:@[ @"instanceMethod:" ]
+                     preprocess:^{
+                       i += 2;
+                     }];
 
   STAssertEquals(i, 0, @"i is invalid.");
 
