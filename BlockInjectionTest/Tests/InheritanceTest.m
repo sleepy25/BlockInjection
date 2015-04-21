@@ -17,7 +17,7 @@
 @implementation Parent
 
 - (void)instanceMethod:(id)arg {
-  NSLog(@"Parent instanceMethod: %@", arg);
+    NSLog(@"Parent instanceMethod: %@", arg);
 }
 
 @end
@@ -30,8 +30,8 @@
 @implementation Child
 
 - (void)instanceMethod:(id)arg {
-  NSLog(@"Child instanceMethod: %@", arg);
-  [super instanceMethod:arg];
+    NSLog(@"Child instanceMethod: %@", arg);
+    [super instanceMethod:arg];
 }
 
 @end
@@ -41,36 +41,36 @@
 @implementation InheritanceTest
 
 - (void)setUp {
-  [super setUp];
-  [BILib clear];
+    [super setUp];
+    [BILib clear];
 }
 
 - (void)tearDown {
-  [super tearDown];
+    [super tearDown];
 }
 
 - (void)testSuperClassMethod {
-  __block int i = 0;
-  [BILib injectToClassWithNames:@[ @"Child" ]
-                    methodNames:@[ @"instanceMethod:" ]
-                     preprocess:^{
+    __block int i = 0;
+    [BILib injectToClassWithNames:@[ @"Child" ]
+                      methodNames:@[ @"instanceMethod:" ]
+                       preprocess:^{
                        ++i;
-                     }];
-  [BILib injectToClassWithNames:@[ @"Parent" ]
-                    methodNames:@[ @"instanceMethod:" ]
-                     preprocess:^{
+                       }];
+    [BILib injectToClassWithNames:@[ @"Parent" ]
+                      methodNames:@[ @"instanceMethod:" ]
+                       preprocess:^{
                        i += 2;
-                     }];
+                       }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 
-  [[Parent new] instanceMethod:@"hello!"];
+    [[Parent new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 2, @"i is invalid.");
+    STAssertEquals(i, 2, @"i is invalid.");
 
-  [[Child new] instanceMethod:@"hello!"];
+    [[Child new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 5, @"i is invalid.");
+    STAssertEquals(i, 5, @"i is invalid.");
 }
 
 @end

@@ -18,7 +18,7 @@
 @implementation SubjectForClass
 
 + (void)classMethod:(id)arg {
-  NSLog(@"classMethod: %@", arg);
+    NSLog(@"classMethod: %@", arg);
 }
 
 @end
@@ -28,27 +28,27 @@
 @implementation ClassMethodTest
 
 - (void)setUp {
-  [super setUp];
-  [BILib clear];
+    [super setUp];
+    [BILib clear];
 }
 
 - (void)tearDown {
-  [super tearDown];
+    [super tearDown];
 }
 
 - (void)testInjectToClassMethod {
-  __block int i = 0;
-  [BILib injectToClass:[SubjectForClass class]
-              selector:@selector(classMethod:)
-            preprocess:^{
+    __block int i = 0;
+    [BILib injectToClass:[SubjectForClass class]
+                selector:@selector(classMethod:)
+              preprocess:^{
               ++i;
-            }];
+              }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 
-  [SubjectForClass classMethod:@"hello!"];
+    [SubjectForClass classMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+    STAssertEquals(i, 1, @"i is invalid.");
 }
 
 @end

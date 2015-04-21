@@ -23,11 +23,11 @@
 @implementation SubjectForReplace
 
 - (void)instanceMethod:(id)arg {
-  NSLog(@"instanceMethod: %@", arg);
+    NSLog(@"instanceMethod: %@", arg);
 }
 
 + (void)classMethod:(id)arg {
-  NSLog(@"classMethod: %@", arg);
+    NSLog(@"classMethod: %@", arg);
 }
 
 @end
@@ -37,110 +37,110 @@
 @implementation ReplaceTest
 
 - (void)setUp {
-  [super setUp];
-  [BILib clear];
+    [super setUp];
+    [BILib clear];
 }
 
 - (void)tearDown {
-  [super tearDown];
+    [super tearDown];
 }
 
 - (void)testReplaceImplementation {
-  __block int i = 0;
-  [BILib replaceImplementationForClass:[SubjectForReplace class]
-                              selector:@selector(instanceMethod:)
-                                 block:^{
+    __block int i = 0;
+    [BILib replaceImplementationForClass:[SubjectForReplace class]
+                                selector:@selector(instanceMethod:)
+                                   block:^{
                                    ++i;
-                                 }];
+                                   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 
-  [[SubjectForReplace new] instanceMethod:@"hello!"];
+    [[SubjectForReplace new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+    STAssertEquals(i, 1, @"i is invalid.");
 }
 
 - (void)testReplaceImplementationForNoMethods {
-  __block int i = 0;
-  [BILib replaceImplementationForClass:[SubjectForReplace class]
-                              selector:@selector(instanceMethod2:)
-                                 block:^{
+    __block int i = 0;
+    [BILib replaceImplementationForClass:[SubjectForReplace class]
+                                selector:@selector(instanceMethod2:)
+                                   block:^{
                                    ++i;
-                                 }];
+                                   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 
-  [[SubjectForReplace new] instanceMethod:@"hello!"];
+    [[SubjectForReplace new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 }
 
 - (void)testReplaceImplementationWithArg {
-  __block NSString *got = nil;
-  [BILib replaceImplementationForClass:[SubjectForReplace class]
-                              selector:@selector(instanceMethod:)
-                                 block:^(id target, id arg) {
+    __block NSString *got = nil;
+    [BILib replaceImplementationForClass:[SubjectForReplace class]
+                                selector:@selector(instanceMethod:)
+                                   block:^(id target, id arg) {
                                    got = arg;
-                                 }];
+                                   }];
 
-  STAssertNil(got, @"got is invalid.");
+    STAssertNil(got, @"got is invalid.");
 
-  [[SubjectForReplace new] instanceMethod:@"got!"];
+    [[SubjectForReplace new] instanceMethod:@"got!"];
 
-  STAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
+    STAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
 }
 
 - (void)testReplaceWithName {
-  __block int i = 0;
-  [BILib replaceImplementationForClassName:@"SubjectForReplace"
-                                methodName:@"instanceMethod:"
-                                     block:^{
+    __block int i = 0;
+    [BILib replaceImplementationForClassName:@"SubjectForReplace"
+                                  methodName:@"instanceMethod:"
+                                       block:^{
                                        ++i;
-                                     }];
+                                       }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 
-  [[SubjectForReplace new] instanceMethod:@"hello!"];
+    [[SubjectForReplace new] instanceMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+    STAssertEquals(i, 1, @"i is invalid.");
 }
 
 - (void)testReplaceClassMethod {
-  __block int i = 0;
-  [BILib replaceImplementationForClass:[SubjectForReplace class]
-                              selector:@selector(classMethod:)
-                                 block:^{
+    __block int i = 0;
+    [BILib replaceImplementationForClass:[SubjectForReplace class]
+                                selector:@selector(classMethod:)
+                                   block:^{
                                    ++i;
-                                 }];
+                                   }];
 
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 
-  [SubjectForReplace classMethod:@"hello!"];
+    [SubjectForReplace classMethod:@"hello!"];
 
-  STAssertEquals(i, 1, @"i is invalid.");
+    STAssertEquals(i, 1, @"i is invalid.");
 }
 
 - (void)testReplaceAndInject {
-  __block NSString *got = nil;
-  [BILib replaceImplementationForClass:[SubjectForReplace class]
-                              selector:@selector(instanceMethod:)
-                                 block:^(id target, id arg) {
+    __block NSString *got = nil;
+    [BILib replaceImplementationForClass:[SubjectForReplace class]
+                                selector:@selector(instanceMethod:)
+                                   block:^(id target, id arg) {
                                    got = arg;
-                                 }];
+                                   }];
 
-  __block int i = 0;
-  [BILib injectToClass:[SubjectForReplace class]
-              selector:@selector(instanceMethod:)
-            preprocess:^{
+    __block int i = 0;
+    [BILib injectToClass:[SubjectForReplace class]
+                selector:@selector(instanceMethod:)
+              preprocess:^{
               ++i;
-            }];
+              }];
 
-  STAssertNil(got, @"got is invalid.");
-  STAssertEquals(i, 0, @"i is invalid.");
+    STAssertNil(got, @"got is invalid.");
+    STAssertEquals(i, 0, @"i is invalid.");
 
-  [[SubjectForReplace new] instanceMethod:@"got!"];
+    [[SubjectForReplace new] instanceMethod:@"got!"];
 
-  STAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
-  STAssertEquals(i, 1, @"i is invalid.");
+    STAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
+    STAssertEquals(i, 1, @"i is invalid.");
 }
 @end

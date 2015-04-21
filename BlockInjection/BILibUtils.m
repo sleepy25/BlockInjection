@@ -11,46 +11,46 @@
 #pragma mark - Public Interface
 
 + (NSString *)saveNameForMethodName:(NSString *)methodName {
-  return [NSString stringWithFormat:@"__mi_save_%@", methodName];
+    return [NSString stringWithFormat:@"__mi_save_%@", methodName];
 }
 
 + (NSString *)preprocessNameForClassName:(NSString *)className
                               methodName:(NSString *)methodName
                                    index:(NSUInteger)index {
-  return [NSString stringWithFormat:@"__mi_%@_pre_%lu_%@", className,
-                                    (unsigned long)index, methodName];
+    return [NSString stringWithFormat:@"__mi_%@_pre_%lu_%@", className,
+                                      (unsigned long)index, methodName];
 }
 
 + (NSString *)postprocessNameForClassName:(NSString *)className
                                methodName:(NSString *)methodName
                                     index:(NSUInteger)index {
-  return [NSString stringWithFormat:@"__mi_%@_post_%lu_%@", className,
-                                    (unsigned long)index, methodName];
+    return [NSString stringWithFormat:@"__mi_%@_post_%lu_%@", className,
+                                      (unsigned long)index, methodName];
 }
 
 + (NSString *)superNameForMethodName:(NSString *)methodName {
-  return [NSString stringWithFormat:@"__mi_super_%@", methodName];
+    return [NSString stringWithFormat:@"__mi_super_%@", methodName];
 }
 
 + (Method)getMethodInClass:(Class) class selector:(SEL)selector {
-  return
-      [BILibUtils getMethodInClass:class selector:selector isClassMethod:NULL];
+    return
+        [BILibUtils getMethodInClass:class selector:selector isClassMethod:NULL];
 }
 
     + (Method)getMethodInClass : (Class) class selector
                                  : (SEL)selector isClassMethod
                                    : (BOOL *)isClassMethod {
-  if (isClassMethod)
-    *isClassMethod = NO;
-  Method method = class_getInstanceMethod(class, selector);
-  if (!method) {
-    method = class_getClassMethod(class, selector);
-    if (method) {
-      if (isClassMethod)
-        *isClassMethod = YES;
+    if (isClassMethod)
+        *isClassMethod = NO;
+    Method method = class_getInstanceMethod(class, selector);
+    if (!method) {
+        method = class_getClassMethod(class, selector);
+        if (method) {
+            if (isClassMethod)
+                *isClassMethod = YES;
+        }
     }
-  }
-  return method;
+    return method;
 }
 
     + (void)addMethodToClass : (Class) class selector
@@ -58,74 +58,74 @@
                                  : (IMP)imp typeEncoding
                                    : (const char *)typeEncoding isClassMethod
                                      : (BOOL)isClassMethod {
-  if (isClassMethod) {
-    class = object_getClass(class);
-  }
-  // The method is added first, to avoid setting the method implementation of a
-  // superclass.
-  if (!class_addMethod(class, selector, imp, typeEncoding)) {
-    method_setImplementation(class_getInstanceMethod(class, selector), imp);
-  }
+    if (isClassMethod) {
+        class = object_getClass(class);
+    }
+    // The method is added first, to avoid setting the method implementation of a
+    // superclass.
+    if (!class_addMethod(class, selector, imp, typeEncoding)) {
+        method_setImplementation(class_getInstanceMethod(class, selector), imp);
+    }
 }
 
     + (NSArray *)classesWithRegex : (NSRegularExpression *)regex {
-  @autoreleasepool {
-    NSMutableArray *retClasses = [NSMutableArray array];
-    int numClasses;
-    numClasses = objc_getClassList(NULL, 0);
-    if (0 < numClasses) {
-      Class *classes = (Class *)malloc(sizeof(Class) * numClasses);
-      objc_getClassList(classes, numClasses);
-      for (int i = 0; i < numClasses; ++i) {
-        Class class = classes[i];
-        NSString *className = NSStringFromClass(class);
-        NSTextCheckingResult *match =
-            [regex firstMatchInString:className
-                              options:0
-                                range:NSMakeRange(0, className.length)];
-        if (0 < match.numberOfRanges) {
-          [retClasses addObject:[NSValue valueWithPointer:(void *)class]];
+    @autoreleasepool {
+        NSMutableArray *retClasses = [NSMutableArray array];
+        int numClasses;
+        numClasses = objc_getClassList(NULL, 0);
+        if (0 < numClasses) {
+            Class *classes = (Class *)malloc(sizeof(Class) * numClasses);
+            objc_getClassList(classes, numClasses);
+            for (int i = 0; i < numClasses; ++i) {
+                Class class = classes[i];
+                NSString *className = NSStringFromClass(class);
+                NSTextCheckingResult *match =
+                    [regex firstMatchInString:className
+                                      options:0
+                                        range:NSMakeRange(0, className.length)];
+                if (0 < match.numberOfRanges) {
+                    [retClasses addObject:[NSValue valueWithPointer:(void *)class]];
+                }
+            }
+            free(classes);
         }
-      }
-      free(classes);
+        return retClasses;
     }
-    return retClasses;
-  }
 }
 
 + (NSArray *)selectorsWithRegex:(NSRegularExpression *)regex
                        forClass:(Class) class {
-  @autoreleasepool {
-    NSArray *instanceMethods =
-        [BILibUtils _selectorsWithRegex:regex forClass:class];
-    NSArray *classMethods =
-        [BILibUtils _selectorsWithRegex:regex forClass:object_getClass(class)];
-    NSMutableArray *retSelectors =
-        [NSMutableArray arrayWithArray:instanceMethods];
-    [retSelectors addObjectsFromArray:classMethods];
-    return retSelectors;
-  }
+    @autoreleasepool {
+        NSArray *instanceMethods =
+            [BILibUtils _selectorsWithRegex:regex forClass:class];
+        NSArray *classMethods =
+            [BILibUtils _selectorsWithRegex:regex forClass:object_getClass(class)];
+        NSMutableArray *retSelectors =
+            [NSMutableArray arrayWithArray:instanceMethods];
+        [retSelectors addObjectsFromArray:classMethods];
+        return retSelectors;
+    }
 }
 
 #pragma mark - Private Methods
 
     + (NSArray *)_selectorsWithRegex : (NSRegularExpression *)regex forClass
                                        : (Class) class {
-  NSMutableArray *retSelectors = [NSMutableArray array];
-  unsigned int count;
-  Method *methods = class_copyMethodList(class, &count);
-  for (int i = 0; i < count; ++i) {
-    SEL sel = method_getName(methods[i]);
-    NSString *methodName = NSStringFromSelector(sel);
-    NSTextCheckingResult *match =
-        [regex firstMatchInString:methodName
-                          options:0
-                            range:NSMakeRange(0, methodName.length)];
-    if (0 < match.numberOfRanges) {
-      [retSelectors addObject:[NSValue valueWithPointer:(void *)sel]];
+    NSMutableArray *retSelectors = [NSMutableArray array];
+    unsigned int count;
+    Method *methods = class_copyMethodList(class, &count);
+    for (int i = 0; i < count; ++i) {
+        SEL sel = method_getName(methods[i]);
+        NSString *methodName = NSStringFromSelector(sel);
+        NSTextCheckingResult *match =
+            [regex firstMatchInString:methodName
+                              options:0
+                                range:NSMakeRange(0, methodName.length)];
+        if (0 < match.numberOfRanges) {
+            [retSelectors addObject:[NSValue valueWithPointer:(void *)sel]];
+        }
     }
-  }
-  return retSelectors;
+    return retSelectors;
 }
 
 @end
