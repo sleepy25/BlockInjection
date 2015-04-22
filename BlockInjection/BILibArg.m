@@ -47,6 +47,29 @@
 + (void)sendArgumentsToInvocation:(NSInvocation *)invocation
                         arguments:(va_list *)pargp
                 numberOfArguments:(NSUInteger)numberOfArguments
+                        //                        signature:(NSMethodSignature*)signature
+                        //{
+                        //  int index = 2;
+                        //  while (numberOfArguments--) {
+                        //    NSUInteger size, alignment;
+                        //    const char *type = [signature getArgumentTypeAtIndex:index];
+                        //    NSString* typeString = [NSString stringWithUTF8String:type];
+                        //    if ([typeString isEqualToString:@"@"] ||
+                        //        [typeString isEqualToString:@"#"] ||
+                        //        [typeString isEqualToString:@"*"] ||
+                        //        [typeString rangeOfString:@"^"].location != NSNotFound ||
+                        //        [typeString isEqualToString:@":"] ){
+                        //      // object type pointer
+                        //      void * pval = va_arg(*pargp, void*);
+                        //      [invocation setArgument:&pval atIndex:index++];
+                        //    } else {
+                        //      // others, primitive types or structure, array
+                        //      NSGetSizeAndAlignment(type, &size, &alignment);
+                        //      [BILibArg sendOneArgumentToInvocation:invocation
+                        //                                  arguments:pargp
+                        //                                      index:index++
+                        //                                       size:size];
+
                         signature:(NSMethodSignature *)signature {
     int index = 2;
     while (numberOfArguments--) {
@@ -84,6 +107,8 @@
                               index:(NSUInteger)index
                                size:(NSUInteger)size {
     if (NO) {
+        ELSE_BILIBARG(4);
+        ELSE_BILIBARG(8);
         ELSE_BILIBARG(12);
         ELSE_BILIBARG(16);
         ELSE_BILIBARG(20);

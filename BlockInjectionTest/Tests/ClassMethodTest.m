@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 tokorom. All rights reserved.
 //
 
-#import "ClassMethodTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 
 #pragma mark - SubjectForClass
@@ -24,6 +24,9 @@
 @end
 
 #pragma mark - ClassMethodTest
+@interface ClassMethodTest : XCTestCase
+
+@end
 
 @implementation ClassMethodTest
 
@@ -44,11 +47,11 @@
               ++i;
               }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [SubjectForClass classMethod:@"hello!"];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 @end

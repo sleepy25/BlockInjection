@@ -4,7 +4,7 @@
 //  Created by ToKoRo on 2013-02-28.
 //
 
-#import "BasicTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 
 #pragma mark - Bizz
@@ -92,6 +92,8 @@ typedef struct bilib_test_1024 {
 @end
 
 #pragma mark - TestCase
+@interface BasicTest : XCTestCase
+@end
 
 @implementation BasicTest
 
@@ -112,11 +114,11 @@ typedef struct bilib_test_1024 {
               ++i;
               }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[Bizz new] sayMessage:@"hello!"];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 - (void)testPostprocess {
@@ -127,11 +129,11 @@ typedef struct bilib_test_1024 {
              ++i;
              }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[Bizz new] sayMessage:@"hello!"];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 - (void)testCallTwice {
@@ -142,16 +144,15 @@ typedef struct bilib_test_1024 {
               ++i;
               }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[Bizz new] sayMessage:@"hello!"];
     [[Bizz new] sayMessage:@"hello!"];
 
-    STAssertEquals(i, 2, @"i is invalid.");
+    XCTAssertEqual(i, 2, @"i is invalid.");
 }
 
 - (void)testHandleProperty {
-    //    Bizz* bizz = [Bizz new];
 
     __block NSString *b = nil;
     [BILib injectToClass:[Bizz class]
@@ -161,13 +162,13 @@ typedef struct bilib_test_1024 {
               b = bizz.backup;
               }];
 
-    STAssertNil(b, @"b is invalid.");
+    XCTAssertNil(b, @"b is invalid.");
 
     Bizz *bizz = [Bizz new];
     bizz.backup = @"backup";
     [bizz sayMessage:@"hello!"];
 
-    STAssertTrue([b isEqualToString:@"backup"], @"b is invalid: %@", b);
+    XCTAssertTrue([b isEqualToString:@"backup"], @"b is invalid: %@", b);
 }
 
 - (void)testHandleArg {
@@ -179,29 +180,27 @@ typedef struct bilib_test_1024 {
               b = message;
               }];
 
-    STAssertNil(b, @"b is invalid.");
+    XCTAssertNil(b, @"b is invalid.");
 
     [bizz sayMessage:@"hello!"];
 
-    STAssertTrue([b isEqualToString:@"hello!"], @"b is invalid: %@", b);
+    XCTAssertTrue([b isEqualToString:@"hello!"], @"b is invalid: %@", b);
 }
 
 - (void)testPremitiveArgs {
     __block int x, y;
     __block long l;
-    [BILib injectToClass:[Buzz class]
-                selector:@selector(sendInt1:int2:long1:)
-              preprocess:^(Buzz *buzz, int int1, int int2, long long1) {
-              x = int1;
-              y = int2;
-              l = long1;
-              }];
+    [BILib injectToClass:[Buzz class] selector:@selector(sendInt1:int2:long1:) preprocess:^(Buzz *buzz, int int1, int int2, long long1) {
+    x = int1;
+    y = int2;
+    l = long1;
+    }];
 
     [[Buzz new] sendInt1:1 int2:2 long1:0xFFFFFFFF];
 
-    STAssertEquals(x, 1, @"x is invalid.");
-    STAssertEquals(y, 2, @"y is invalid.");
-    STAssertEquals(l, (long)0xFFFFFFFF, @"l is invalid.");
+    XCTAssertEqual(x, 1, @"x is invalid.");
+    XCTAssertEqual(y, 2, @"y is invalid.");
+    XCTAssertEqual(l, (long)0xFFFFFFFF, @"l is invalid.");
 }
 
 - (void)testInjectWithString {
@@ -212,11 +211,11 @@ typedef struct bilib_test_1024 {
                       ++i;
                       }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[Bizz new] sayMessage:@"hello!"];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 - (void)testInjectTwice {
@@ -232,36 +231,30 @@ typedef struct bilib_test_1024 {
               i += 200;
               }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[Bizz new] sayMessage:@"hello!"];
 
-    STAssertEquals(i, 300, @"i is invalid.");
+    XCTAssertEqual(i, 300, @"i is invalid.");
 }
 
 - (void)testInjectTriple {
     __block int i = 0;
-    [BILib injectToClass:[Bizz class]
-                selector:@selector(sayMessage:)
-              preprocess:^(Bizz *bizz, NSString *message) {
-              i += 100;
-              }];
-    [BILib injectToClass:[Bizz class]
-                selector:@selector(sayMessage:)
-              preprocess:^(Bizz *bizz, NSString *message) {
-              i += 200;
-              }];
-    [BILib injectToClass:[Bizz class]
-                selector:@selector(sayMessage:)
-              preprocess:^(Bizz *bizz, NSString *message) {
-              i += 300;
-              }];
+    [BILib injectToClass:[Bizz class] selector:@selector(sayMessage:) preprocess:^(Bizz *bizz, NSString *message) {
+    i += 100;
+    }];
+    [BILib injectToClass:[Bizz class] selector:@selector(sayMessage:) preprocess:^(Bizz *bizz, NSString *message) {
+    i += 200;
+    }];
+    [BILib injectToClass:[Bizz class] selector:@selector(sayMessage:) preprocess:^(Bizz *bizz, NSString *message) {
+    i += 300;
+    }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[Bizz new] sayMessage:@"hello!"];
 
-    STAssertEquals(i, 600, @"i is invalid.");
+    XCTAssertEqual(i, 600, @"i is invalid.");
 }
 
 - (void)testSubclass {
@@ -273,11 +266,11 @@ typedef struct bilib_test_1024 {
 
     BizzChild *child = [BizzChild new];
 
-    STAssertEquals(child.count, 0, @"count is invalid.");
+    XCTAssertEqual(child.count, 0, @"count is invalid.");
 
     [child sayMessage:@"hello!" tag:5];
 
-    STAssertEquals(child.count, 2, @"count is invalid.");
+    XCTAssertEqual(child.count, 2, @"count is invalid.");
 }
 
 - (void)testUIView {
@@ -293,11 +286,11 @@ typedef struct bilib_test_1024 {
 
     view.tag = 100;
 
-    STAssertEquals(view.tag, 100ll, @"tag is invalid.");
+    XCTAssertEqual(view.tag, 100, @"tag is invalid.");
 
     view.center = CGPointMake(10, 10);
 
-    STAssertEquals(view.tag, 200ll, @"tag is invalid.");
+    XCTAssertEqual(view.tag, 200, @"tag is invalid.");
 }
 
 - (void)testUIViewController {
@@ -314,13 +307,13 @@ typedef struct bilib_test_1024 {
 
     UIViewController *viewController = [UIViewController new];
 
-    STAssertEquals(bflag, NO, @"blag is invalid.");
+    XCTAssertEqual(bflag, NO, @"blag is invalid.");
 
     [viewController presentViewController:[UIViewController new]
                                  animated:YES
                                completion:NULL];
 
-    STAssertEquals(bflag, YES, @"blag is invalid.");
+    XCTAssertEqual(bflag, YES, @"blag is invalid.");
 }
 
 - (void)testReturnValue {
@@ -332,12 +325,12 @@ typedef struct bilib_test_1024 {
 
     Bizz *bizz = [Bizz new];
 
-    STAssertEquals(bizz.count, 0, @"i is invalid.");
+    XCTAssertEqual(bizz.count, 0, @"i is invalid.");
 
     bizz.count = 100;
     int ret = bizz.count;
 
-    STAssertEquals(ret, 100, @"ret is invalid.");
+    XCTAssertEqual(ret, 100, @"ret is invalid.");
 }
 
 - (void)testReturnValueForObject {
@@ -351,8 +344,7 @@ typedef struct bilib_test_1024 {
 
     bizz.backup = @"xxx";
 
-    STAssertTrue([bizz.backup isEqualToString:@"xxx"],
-                 @"bizz.backup is invalid: %@", bizz.backup);
+    XCTAssertTrue([bizz.backup isEqualToString:@"xxx"], @"bizz.backup is invalid: %@", bizz.backup);
 }
 
 - (void)testForReadme {
@@ -371,7 +363,7 @@ typedef struct bilib_test_1024 {
 
     [[ViewController new] buttonDidPush:nil];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 
     [BILib injectToClassWithName:@"ViewController"
                       methodName:@"buttonDidPush:"
@@ -387,7 +379,7 @@ typedef struct bilib_test_1024 {
 
     [[ViewController new] buttonDidPush:nil];
 
-    STAssertEquals(i, 10, @"i is invalid.");
+    XCTAssertEqual(i, 10, @"i is invalid.");
 }
 
 - (void)testNilArgument {
@@ -402,12 +394,12 @@ typedef struct bilib_test_1024 {
 
     BizzChild *child = [BizzChild new];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [child sayMessage:nil tag:999];
 
-    STAssertNil(str, @"str is not nil.");
-    STAssertEquals(i, 999, @"i is invalid.");
+    XCTAssertNil(str, @"str is not nil.");
+    XCTAssertEqual(i, 999, @"i is invalid.");
 }
 
 - (void)testLongLongArgument {
@@ -422,8 +414,8 @@ typedef struct bilib_test_1024 {
 
     [[Buzz new] sendChar:'k' d:0.33333];
 
-    STAssertEquals(bc, (char)'k', @"bc is invalid.");
-    STAssertEquals(bd, (double)0.33333, @"bd is invalid.");
+    XCTAssertEqual(bc, (char)'k', @"bc is invalid.");
+    XCTAssertEqual(bd, (double)0.33333, @"bd is invalid.");
 }
 
 - (void)testStructArgument {
@@ -439,29 +431,25 @@ typedef struct bilib_test_1024 {
 
     UIView *view = [UIView new];
 
-    STAssertEquals(height, (CGFloat)0.0, @"height is invalid.");
+    XCTAssertEqual(height, (CGFloat)0.0, @"height is invalid.");
 
     [view setFrame:CGRectMake(10, 0, 20, 50)];
 
-    STAssertEquals(height, (CGFloat)50.0, @"height is invalid.");
+    XCTAssertEqual(height, (CGFloat)50.0, @"height is invalid.");
 }
 
 - (void)testStruct17Argument {
     __block long l14 = 0;
     __block long l24 = 0;
-    [BILib injectToClass:[Buzz class]
-                selector:@selector(sendStruct17:st2:)
-              preprocess:^(id target, bilib_test_17 st1, bilib_test_17 st2) {
-              NSLog(@"st1:(%c, %ld, %ld, %ld, %ld)", st1.c, st1.l1, st1.l2,
-                    st1.l3, st1.l4);
-              NSLog(@"st2:(%c, %ld, %ld, %ld, %ld)", st2.c, st2.l1, st2.l2,
-                    st2.l3, st2.l4);
-              l14 = st1.l4;
-              l24 = st2.l4;
-              }];
+    [BILib injectToClass:[Buzz class] selector:@selector(sendStruct17:st2:) preprocess:^(id target, bilib_test_17 st1, bilib_test_17 st2) {
+    NSLog(@"st1:(%c, %ld, %ld, %ld, %ld)", st1.c, st1.l1, st1.l2, st1.l3, st1.l4);
+    NSLog(@"st2:(%c, %ld, %ld, %ld, %ld)", st2.c, st2.l1, st2.l2, st2.l3, st2.l4);
+    l14 = st1.l4;
+    l24 = st2.l4;
+    }];
 
-    STAssertEquals(l14, (long)0, @"l14 is invalid.");
-    STAssertEquals(l24, (long)0, @"l24 is invalid.");
+    XCTAssertEqual(l14, (long)0, @"l14 is invalid.");
+    XCTAssertEqual(l24, (long)0, @"l24 is invalid.");
 
     bilib_test_17 st1;
     st1.c = 'c';
@@ -477,8 +465,8 @@ typedef struct bilib_test_1024 {
     st2.l4 = 1256;
     [[Buzz new] sendStruct17:st1 st2:st2];
 
-    STAssertEquals(l14, (long)256, @"l14 is invalid.");
-    STAssertEquals(l24, (long)1256, @"l24 is invalid.");
+    XCTAssertEqual(l14, (long)256, @"l14 is invalid.");
+    XCTAssertEqual(l24, (long)1256, @"l24 is invalid.");
 }
 
 - (void)testStruct1024Argument {
@@ -489,13 +477,13 @@ typedef struct bilib_test_1024 {
               c = st1024.c;
               }];
 
-    STAssertEquals(c, (char)0, @"c is invalid.");
+    XCTAssertEqual(c, (char)0, @"c is invalid.");
 
     bilib_test_1024 st1024;
     st1024.c = 'x';
     [[Buzz new] sendStruct1024:st1024];
 
-    STAssertEquals(c, (char)'x', @"c is invalid.");
+    XCTAssertEqual(c, (char)'x', @"c is invalid.");
 }
 
 @end

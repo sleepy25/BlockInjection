@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 tokorom. All rights reserved.
 //
 
-#import "ReplaceTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 
 #pragma mark - SubjectForReplace
@@ -34,6 +34,9 @@
 
 #pragma mark - ReplaceTest
 
+@interface ReplaceTest : XCTestCase
+@end
+
 @implementation ReplaceTest
 
 - (void)setUp {
@@ -53,11 +56,11 @@
                                    ++i;
                                    }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[SubjectForReplace new] instanceMethod:@"hello!"];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 - (void)testReplaceImplementationForNoMethods {
@@ -68,11 +71,11 @@
                                    ++i;
                                    }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[SubjectForReplace new] instanceMethod:@"hello!"];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 }
 
 - (void)testReplaceImplementationWithArg {
@@ -83,11 +86,11 @@
                                    got = arg;
                                    }];
 
-    STAssertNil(got, @"got is invalid.");
+    XCTAssertNil(got, @"got is invalid.");
 
     [[SubjectForReplace new] instanceMethod:@"got!"];
 
-    STAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
+    XCTAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
 }
 
 - (void)testReplaceWithName {
@@ -98,11 +101,11 @@
                                        ++i;
                                        }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[SubjectForReplace new] instanceMethod:@"hello!"];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 - (void)testReplaceClassMethod {
@@ -113,11 +116,11 @@
                                    ++i;
                                    }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [SubjectForReplace classMethod:@"hello!"];
 
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 - (void)testReplaceAndInject {
@@ -135,12 +138,12 @@
               ++i;
               }];
 
-    STAssertNil(got, @"got is invalid.");
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertNil(got, @"got is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[SubjectForReplace new] instanceMethod:@"got!"];
 
-    STAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
-    STAssertEquals(i, 1, @"i is invalid.");
+    XCTAssertTrue([got isEqualToString:@"got!"], @"got is invalid: %@", got);
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 @end

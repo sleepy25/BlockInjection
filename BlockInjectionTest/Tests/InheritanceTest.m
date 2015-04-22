@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 tokorom. All rights reserved.
 //
 
-#import "InheritanceTest.h"
+#import <XCTest/XCTest.h>
 #import "BILib.h"
 
 #pragma mark - Parent
@@ -38,6 +38,10 @@
 
 #pragma mark - InheritanceTest
 
+@interface InheritanceTest : XCTestCase
+
+@end
+
 @implementation InheritanceTest
 
 - (void)setUp {
@@ -62,15 +66,15 @@
                        i += 2;
                        }];
 
-    STAssertEquals(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
     [[Parent new] instanceMethod:@"hello!"];
 
-    STAssertEquals(i, 2, @"i is invalid.");
+    XCTAssertEqual(i, 2, @"i is invalid.");
 
     [[Child new] instanceMethod:@"hello!"];
 
-    STAssertEquals(i, 5, @"i is invalid.");
+    XCTAssertEqual(i, 5, @"i is invalid.");
 }
 
 @end
