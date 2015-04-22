@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D62AB4ED-98D9-43DF-ADCE-2AB6767F599E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BlockInjection</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>EF5BCA2D9D70D467CAD10804CBFE3E3D73229214</key>
+		<string>https://github.com/sleepy25/BlockInjection.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BlockInjection.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>EF5BCA2D9D70D467CAD10804CBFE3E3D73229214</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/sleepy25/BlockInjection.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>EF5BCA2D9D70D467CAD10804CBFE3E3D73229214</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EF5BCA2D9D70D467CAD10804CBFE3E3D73229214</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BlockInjection</string>
+		</dict>
+	</array>
+</dict>
+</plist>

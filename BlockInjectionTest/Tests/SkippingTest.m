@@ -16,23 +16,20 @@
 #pragma mark - SubjectForSkipping
 
 @interface SubjectForSkipping : NSObject
-@end 
+@end
 
 @implementation SubjectForSkipping
 
-- (int)intValue
-{
-  return 100;
+- (int)intValue {
+    return 100;
 }
 
-- (CGRect)rectValue
-{
-  return CGRectMake(10.0, 20.0, 30.0, 40.0);
+- (CGRect)rectValue {
+    return CGRectMake(10.0, 20.0, 30.0, 40.0);
 }
 
-- (char)charValue
-{
-  return 'a';
+- (char)charValue {
+    return 'a';
 }
 
 @end
@@ -44,79 +41,80 @@
 
 @implementation SkippingTest
 
-- (void)setUp
-{
-  [super setUp];
-  [BILib clear];
+- (void)setUp {
+    [super setUp];
+    [BILib clear];
 }
 
-- (void)tearDown
-{
-  [super tearDown];
+- (void)tearDown {
+    [super tearDown];
 }
 
-- (void)testNormallyReturnValue
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" preprocess:^{
-  }];
+- (void)testNormallyReturnValue {
+    [BILib injectToClassWithName:@"SubjectForSkipping"
+                      methodName:@"intValue"
+                      preprocess:^{
+                      }];
 
-  int ret = [[SubjectForSkipping new] intValue];
+    int ret = [[SubjectForSkipping new] intValue];
 
-  XCTAssertEqual(ret, 100, @"ret is invalid.");
+    XCTAssertEqual(ret, 100, @"ret is invalid.");
 }
 
-- (void)testSkippingOriginalMethod
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" preprocess:^{
+- (void)testSkippingOriginalMethod {
+    [BILib injectToClassWithName:@"SubjectForSkipping"
+                      methodName:@"intValue"
+                      preprocess:^{
+                      int ret = 10;
+                      [BILib skipAfterProcessesWithReturnValue:&ret];
+                      }];
+
+    int ret = [[SubjectForSkipping new] intValue];
+
+    XCTAssertEqual(ret, 10, @"ret is invalid.");
+}
+
+- (void)testSkippingPostprocess {
+    [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" preprocess:^{
     int ret = 10;
     [BILib skipAfterProcessesWithReturnValue:&ret];
-  }];
+    }];
 
-  int ret = [[SubjectForSkipping new] intValue];
-
-  XCTAssertEqual(ret, 10, @"ret is invalid.");
-}
-
-- (void)testSkippingPostprocess
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" preprocess:^{
-    int ret = 10;
-    [BILib skipAfterProcessesWithReturnValue:&ret];
-  }];
-
-  __block int i = 0;
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" postprocess:^{
+    __block int i = 0;
+    [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" postprocess:^{
     i = 1;
-  }];
+    }];
 
-  int ret = [[SubjectForSkipping new] intValue];
+    int ret = [[SubjectForSkipping new] intValue];
 
-  XCTAssertEqual(ret, 10, @"ret is invalid.");
-  XCTAssertEqual(i, 0, @"i is invalid.");
+    XCTAssertEqual(ret, 10, @"ret is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 }
 
-- (void)testOverrideReturnValueByPostprocess
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"intValue" postprocess:^{
-    int ret = 99;
-    [BILib skipAfterProcessesWithReturnValue:&ret];
-  }];
+- (void)testOverrideReturnValueByPostprocess {
+    [BILib injectToClassWithName:@"SubjectForSkipping"
+                      methodName:@"intValue"
+                     postprocess:^{
+                     int ret = 99;
+                     [BILib skipAfterProcessesWithReturnValue:&ret];
+                     }];
 
-  int ret = [[SubjectForSkipping new] intValue];
+    int ret = [[SubjectForSkipping new] intValue];
 
-  XCTAssertEqual(ret, 99, @"ret is invalid.");
+    XCTAssertEqual(ret, 99, @"ret is invalid.");
 }
 
-- (void)testReturnChar
-{
-  [BILib injectToClassWithName:@"SubjectForSkipping" methodName:@"charValue" preprocess:^{
-    char c = 'c';
-    [BILib skipAfterProcessesWithReturnValue:&c];
-  }];
+- (void)testReturnChar {
+    [BILib injectToClassWithName:@"SubjectForSkipping"
+                      methodName:@"charValue"
+                      preprocess:^{
+                      char c = 'c';
+                      [BILib skipAfterProcessesWithReturnValue:&c];
+                      }];
 
-  char c = [[SubjectForSkipping new] charValue];
+    char c = [[SubjectForSkipping new] charValue];
 
-  XCTAssertEqual(c, (char)'c', @"c is invalid.");
+    XCTAssertEqual(c, (char)'c', @"c is invalid.");
 }
 
 @end
