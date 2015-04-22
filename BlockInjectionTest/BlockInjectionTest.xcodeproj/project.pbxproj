@@ -329,6 +329,7 @@
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"$(inherited)",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlockInjectionTest-Prefix.pch";
 				INFOPLIST_FILE = "Tests/BlockInjectionTests-Info.plist";

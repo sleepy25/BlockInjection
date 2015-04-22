@@ -6,9 +6,9 @@
 
 @interface BILibArg : NSObject
 
-+ (void)sendArgumentsToInvocation:(NSInvocation*)invocation
-                        arguments:(va_list*)pargp
++ (void)sendArgumentsToInvocation:(NSInvocation *)invocation
+                        arguments:(va_list *)pargp
                 numberOfArguments:(NSUInteger)numberOfArguments
-                        signature:(NSMethodSignature*)signature;
+                        signature:(NSMethodSignature *)signature;
 
 @end

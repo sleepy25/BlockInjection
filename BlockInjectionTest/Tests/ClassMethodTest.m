@@ -13,13 +13,12 @@
 
 @interface SubjectForClass : NSObject
 + (void)classMethod:(id)arg;
-@end 
+@end
 
 @implementation SubjectForClass
 
-+ (void)classMethod:(id)arg
-{
-  NSLog(@"classMethod: %@", arg);
++ (void)classMethod:(id)arg {
+    NSLog(@"classMethod: %@", arg);
 }
 
 @end
@@ -31,29 +30,28 @@
 
 @implementation ClassMethodTest
 
-- (void)setUp
-{
-  [super setUp];
-  [BILib clear];
+- (void)setUp {
+    [super setUp];
+    [BILib clear];
 }
 
-- (void)tearDown
-{
-  [super tearDown];
+- (void)tearDown {
+    [super tearDown];
 }
 
-- (void)testInjectToClassMethod
-{
-  __block int i = 0;
-  [BILib injectToClass:[SubjectForClass class] selector:@selector(classMethod:) preprocess:^{
-    ++i;
-  }];
+- (void)testInjectToClassMethod {
+    __block int i = 0;
+    [BILib injectToClass:[SubjectForClass class]
+                selector:@selector(classMethod:)
+              preprocess:^{
+              ++i;
+              }];
 
-  XCTAssertEqual(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
-  [SubjectForClass classMethod:@"hello!"];
+    [SubjectForClass classMethod:@"hello!"];
 
-  XCTAssertEqual(i, 1, @"i is invalid.");
+    XCTAssertEqual(i, 1, @"i is invalid.");
 }
 
 @end

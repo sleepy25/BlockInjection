@@ -12,13 +12,12 @@
 #pragma mark - Parent
 
 @interface Parent : NSObject
-@end 
+@end
 
 @implementation Parent
 
-- (void)instanceMethod:(id)arg
-{
-  NSLog(@"Parent instanceMethod: %@", arg);
+- (void)instanceMethod:(id)arg {
+    NSLog(@"Parent instanceMethod: %@", arg);
 }
 
 @end
@@ -26,14 +25,13 @@
 #pragma mark - Child
 
 @interface Child : Parent
-@end 
+@end
 
 @implementation Child
 
-- (void)instanceMethod:(id)arg
-{
-  NSLog(@"Child instanceMethod: %@", arg);
-  [super instanceMethod:arg];
+- (void)instanceMethod:(id)arg {
+    NSLog(@"Child instanceMethod: %@", arg);
+    [super instanceMethod:arg];
 }
 
 @end
@@ -46,36 +44,37 @@
 
 @implementation InheritanceTest
 
-- (void)setUp
-{
-  [super setUp];
-  [BILib clear];
+- (void)setUp {
+    [super setUp];
+    [BILib clear];
 }
 
-- (void)tearDown
-{
-  [super tearDown];
+- (void)tearDown {
+    [super tearDown];
 }
 
-- (void)testSuperClassMethod
-{
-  __block int i = 0;
-  [BILib injectToClassWithNames:@[@"Child"] methodNames:@[@"instanceMethod:"] preprocess:^{
-    ++i;
-  }];
-  [BILib injectToClassWithNames:@[@"Parent"] methodNames:@[@"instanceMethod:"] preprocess:^{
-    i+=2;
-  }];
+- (void)testSuperClassMethod {
+    __block int i = 0;
+    [BILib injectToClassWithNames:@[ @"Child" ]
+                      methodNames:@[ @"instanceMethod:" ]
+                       preprocess:^{
+                       ++i;
+                       }];
+    [BILib injectToClassWithNames:@[ @"Parent" ]
+                      methodNames:@[ @"instanceMethod:" ]
+                       preprocess:^{
+                       i += 2;
+                       }];
 
-  XCTAssertEqual(i, 0, @"i is invalid.");
+    XCTAssertEqual(i, 0, @"i is invalid.");
 
-  [[Parent new] instanceMethod:@"hello!"];
+    [[Parent new] instanceMethod:@"hello!"];
 
-  XCTAssertEqual(i, 2, @"i is invalid.");
+    XCTAssertEqual(i, 2, @"i is invalid.");
 
-  [[Child new] instanceMethod:@"hello!"];
+    [[Child new] instanceMethod:@"hello!"];
 
-  XCTAssertEqual(i, 5, @"i is invalid.");
+    XCTAssertEqual(i, 5, @"i is invalid.");
 }
 
 @end
