@@ -251,7 +251,7 @@ struct ReturnValueBigStruct {
     }];
 
     UIView *view = [UIView new];
-    view.alpha = 0.8;
+    view.alpha = (CGFloat)0.8;
 
     CGFloat alpha = view.alpha;
 
